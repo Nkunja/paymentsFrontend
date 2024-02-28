@@ -1,10 +1,19 @@
 import './App.css';
+// import { BrouserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+
+
+import HomePage from './Components/Homepage';
+
 
 function App() {
   return (
-    <div className="App">
-      <h1 className="text-3xl font-bold text-center text-red-500 mt-8">Sir Nkunja</h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />}/>
+        <Route path="*" element={<Navigate to=" /" />} />
+      </Routes>
+    </Router>
   );
 }
 
