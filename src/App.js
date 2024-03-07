@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 
 
 import HomePage from './Components/Homepage';
+import LoginPage from './Components/Login';
 
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />}/>
+        <Route path="/Login" element={<LoginPage />}/>
         <Route path="*" element={<Navigate to=" /" />} />
       </Routes>
     </Router>
