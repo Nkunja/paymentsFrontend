@@ -9,14 +9,24 @@ function LoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://79b5-197-248-160-69.ngrok-free.app/login', {
+      const response = await axios.post('https://9062-41-209-57-167.ngrok-free.app/login', {
         email,
         password
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
       });
-      // Handle successful login (redirect, set token, etc.)
-      console.log('Login successful:', response.data);
+      if (response.status === 200) {
+        console.log('Login successful:', response.data);
+        // Redirect user or perform other actions upon successful login
+      } else {
+        console.log('Login failed:', response);
+        setError('Login Failed');
+      }
     } catch (error) {
-      setError(error.response.data.message);
+      console.error('Error logging in:', error);
+      setError('Failed to log in');
     }
   };
 
