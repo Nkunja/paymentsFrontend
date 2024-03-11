@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function LoginPage() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(''); // Change setEmail to setUsername
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [csrfToken, setCsrfToken] = useState('');
+
+  useEffect(() => {
+    // Fetch CSRF token from the script tag in the HTML
+    setCsrfToken(document.querySelector('[name=csrfmiddlewaretoken]').value);
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://9062-41-209-57-167.ngrok-free.app/login', {
+      const response = await axios.post('http://127.0.0.1:8000/login', {
         email,
         password
       }, {
         headers: {
           'Content-Type': 'application/json',
-        }
+          'X-CSRFToken': csrfToken,
+        },
+        withCredentials: true // Include this option
       });
+  
+
+  
       if (response.status === 200) {
         console.log('Login successful:', response.data);
         // Redirect user or perform other actions upon successful login
@@ -29,15 +40,20 @@ function LoginPage() {
       setError('Failed to log in');
     }
   };
+  
+  
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-4">Login</h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleLogin}>
+        {/* Add the CSRF token to the form */}
+        <input type="hidden" name="csrfmiddlewaretoken" value={csrfToken} />
+        
         <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-700 font-bold mb-2">Email</label>
-          <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="border border-gray-300 rounded-md py-2 px-3 w-full" />
+          <label htmlFor="username" className="block text-gray-700 font-bold mb-2">Username</label> {/* Change email to username */}
+          <input type="text" id="username" value={email} onChange={(e) => setEmail(e.target.value)} className="border border-gray-300 rounded-md py-2 px-3 w-full" /> {/* Change type to text and email to username */}
         </div>
         <div className="mb-4">
           <label htmlFor="password" className="block text-gray-700 font-bold mb-2">Password</label>
@@ -50,3 +66,4 @@ function LoginPage() {
 }
 
 export default LoginPage;
+

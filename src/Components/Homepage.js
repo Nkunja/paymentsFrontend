@@ -10,12 +10,17 @@ function HomePage() {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('https://9062-41-209-57-167.ngrok-free.app/products');
+      const response = await fetch('http://localhost:8000/products', {
+        method: 'GET',
+        headers: {
+          'Origin': 'http://localhost:3000' // Update with your frontend URL
+        }
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch products');
       }
       const data = await response.json();
-      console.log(data)
+      console.log(data);
       setProducts(data.products);
     } catch (error) {
       console.error('Error fetching products:', error);
